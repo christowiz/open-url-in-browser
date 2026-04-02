@@ -1,0 +1,9 @@
+{
+  "name": "com.christowiz.open_url_in_browser",
+  "description": "Opens URLs in other browsers via the macOS open command",
+  "path": "/usr/local/lib/open-url-in-browser/open_url_in_browser.py",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://jmgamfcdphkcadknmiekecdpdmgcgakk/"
+  ]
+}

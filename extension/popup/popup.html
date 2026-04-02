@@ -1,55 +1,56 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Open URL In Browser</title>
-  <link rel="stylesheet" href="popup.css" />
-</head>
-<body>
-
-  <!-- Header -->
-  <div id="popup-header">
-    <span class="popup-title">Open URL In Browser</span>
-    <button id="settings-btn" title="Settings">⚙</button>
-  </div>
-
-  <!-- Recovery banner (hidden until partial_failure detected) -->
-  <div id="recovery-banner" class="banner hidden">
-    <span id="recovery-msg"></span>
-    <div class="banner-actions">
-      <button id="retry-btn" class="primary small">Retry</button>
-      <button id="dismiss-btn" class="small">Dismiss</button>
-    </div>
-  </div>
-
-  <!-- Empty state -->
-  <div id="empty-state" class="state hidden">
-    <p>No browsers configured.</p>
-    <a id="go-options" href="#">Open Settings</a>
-  </div>
-
-  <!-- Native host error state -->
-  <div id="error-state" class="state hidden">
-    <p class="error-title">Native host not found</p>
-    <p class="error-body">Run the installer, then reload the extension:</p>
-    <code id="install-cmd"></code>
-    <button id="copy-cmd-btn" class="small">Copy</button>
-  </div>
-
-  <!-- Main UI -->
-  <div id="main" class="hidden">
-    <div class="toolbar">
-      <label class="toggle-label">
-        <input type="checkbox" id="close-tabs-toggle" />
-        Close source tabs
-      </label>
-<span id="tab-count-badge" class="badge hidden"></span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Open URL In Browser</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <div id="popup-header">
+      <span class="popup-title">Open URL In Browser</span>
+      <button id="settings-btn" title="Settings">
+        <img src="../icons/settings-gear-outlined.svg" alt="Settings" />
+      </button>
     </div>
 
-    <ul id="browser-list"></ul>
-  </div>
+    <!-- Recovery banner (hidden until partial_failure detected) -->
+    <div id="recovery-banner" class="banner hidden">
+      <span id="recovery-msg"></span>
+      <div class="banner-actions">
+        <button id="retry-btn" class="primary small">Retry</button>
+        <button id="dismiss-btn" class="small">Dismiss</button>
+      </div>
+    </div>
 
-  <script type="module" src="popup.js"></script>
-</body>
+    <!-- Empty state -->
+    <div id="empty-state" class="state hidden">
+      <p>No browsers configured.</p>
+      <a id="go-options" href="#">Open Settings</a>
+    </div>
+
+    <!-- Native host error state -->
+    <div id="error-state" class="state hidden">
+      <p class="error-title">Native host not found</p>
+      <p class="error-body">Run the installer, then reload the extension:</p>
+      <code id="install-cmd"></code>
+      <button id="copy-cmd-btn" class="small">Copy</button>
+    </div>
+
+    <!-- Main UI -->
+    <div id="main" class="hidden">
+      <div class="toolbar">
+        <label class="toggle-label">
+          <input type="checkbox" id="close-tabs-toggle" />
+          Close source tabs
+        </label>
+        <span id="tab-count-badge" class="badge hidden"></span>
+      </div>
+
+      <ul id="browser-list"></ul>
+    </div>
+
+    <script type="module" src="popup.js"></script>
+  </body>
 </html>

@@ -81,6 +81,9 @@ async function handleMessage(msg) {
     case MSG_TYPES.PING_NATIVE:
       return sendNativeMessage({ action: "ping" });
 
+    case MSG_TYPES.INSPECT_APP:
+      return sendNativeMessage({ action: "inspect_app", appPath: msg.payload.appPath });
+
     default:
       throw new Error(`Unknown message type: ${msg.type}`);
   }
@@ -98,7 +101,7 @@ async function handleMessage(msg) {
  *   tabIds: number[],
  * }} params
  */
-async function executeOpen({ browser, urls, closeTabs, tabIds }) {
+async function executeOpen({ browser, urls, closeTabs, tabIds, newWindow = false }) {
   const sendable = urls.filter((u) => !isUnsendable(u));
   const skipped = urls.length - sendable.length;
 
@@ -126,6 +129,7 @@ async function executeOpen({ browser, urls, closeTabs, tabIds }) {
       action: "open_urls",
       bundleId: browser.bundleId,
       urls: sendable,
+      newWindow,
     });
     results = response.results ?? sendable.map((url) => ({ url, success: false, error: "no results" }));
   } catch (err) {

@@ -16,7 +16,7 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 BAKED_EXTENSION_ID="jmgamfcdphkcadknmiekecdpdmgcgakk"
 EXTENSION_ID="${1:-$BAKED_EXTENSION_ID}"
 
-HOST_NAME="com.open_url_in_browser"
+HOST_NAME="com.christowiz.open_url_in_browser"
 INSTALL_DIR="/usr/local/lib/open-url-in-browser"
 SCRIPT_SRC="$REPO_ROOT/native-host/open_url_in_browser.py"
 SCRIPT_DEST="$INSTALL_DIR/open_url_in_browser.py"
@@ -32,6 +32,7 @@ NMH_DIRS=(
     "$HOME/Library/Application Support/Microsoft Edge/NativeMessagingHosts"
     "$HOME/Library/Application Support/Vivaldi/NativeMessagingHosts"
     "$HOME/Library/Application Support/com.operasoftware.Opera/NativeMessagingHosts"
+    "$HOME/Library/Application Support/net.imput.helium/NativeMessagingHosts"
 )
 
 # ---- Install script --------------------------------------------------------
@@ -39,10 +40,12 @@ NMH_DIRS=(
 echo "Installing native host script to $INSTALL_DIR ..."
 sudo mkdir -p "$INSTALL_DIR"
 sudo cp "$SCRIPT_SRC" "$SCRIPT_DEST"
-sudo chmod +x "$SCRIPT_DEST"
+sudo cp "${BASH_SOURCE[0]}" "$INSTALL_DIR/install.sh"
+sudo chmod +x "$SCRIPT_DEST" "$INSTALL_DIR/install.sh"
 # Remove macOS quarantine flag that would prevent execution
-sudo xattr -d com.apple.quarantine "$SCRIPT_DEST" 2>/dev/null || true
+sudo xattr -d com.apple.quarantine "$SCRIPT_DEST" "$INSTALL_DIR/install.sh" 2>/dev/null || true
 echo "  Installed: $SCRIPT_DEST"
+echo "  Installed: $INSTALL_DIR/install.sh"
 
 # ---- Write host manifest ---------------------------------------------------
 

@@ -5,7 +5,7 @@
 
 set -euo pipefail
 
-HOST_NAME="com.open_url_in_browser"
+HOST_NAME="com.christowiz.open_url_in_browser"
 INSTALL_DIR="/usr/local/lib/open-url-in-browser"
 MANIFEST_NAME="${HOST_NAME}.json"
 
@@ -18,6 +18,7 @@ NMH_DIRS=(
     "$HOME/Library/Application Support/Microsoft Edge/NativeMessagingHosts"
     "$HOME/Library/Application Support/Vivaldi/NativeMessagingHosts"
     "$HOME/Library/Application Support/com.operasoftware.Opera/NativeMessagingHosts"
+    "$HOME/Library/Application Support/net.imput.helium/NativeMessagingHosts"
 )
 
 echo "Removing host manifests ..."

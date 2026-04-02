@@ -1,4 +1,4 @@
-export const NATIVE_HOST_NAME = "com.open_url_in_browser";
+export const NATIVE_HOST_NAME = "com.christowiz.open_url_in_browser";
 
 export const EXTENSION_ID = "jmgamfcdphkcadknmiekecdpdmgcgakk";
 
@@ -16,7 +16,7 @@ export const KNOWN_BROWSERS = [
   { id: "brave",    name: "Brave",            bundleId: "com.brave.Browser" },
   { id: "firefox",  name: "Firefox",          bundleId: "org.mozilla.firefox" },
   { id: "edge",     name: "Microsoft Edge",   bundleId: "com.microsoft.edgemac" },
-  { id: "helium",   name: "Helium",           bundleId: "com.helium.app" },
+  { id: "helium",   name: "Helium",           bundleId: "net.imput.helium" },
   { id: "vivaldi",  name: "Vivaldi",          bundleId: "com.vivaldi.Vivaldi" },
   { id: "opera",    name: "Opera",            bundleId: "com.operasoftware.Opera" },
   { id: "zen",      name: "Zen Browser",      bundleId: "net.zen-browser.app" },
@@ -33,6 +33,7 @@ export const MSG_TYPES = {
   // options → service worker
   RELOAD_CONTEXT_MENU: "RELOAD_CONTEXT_MENU",
   PING_NATIVE:         "PING_NATIVE",
+  INSPECT_APP:         "INSPECT_APP",
 
   // service worker → popup (responses)
   STATE_UPDATE:       "STATE_UPDATE",

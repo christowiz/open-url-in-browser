@@ -33,8 +33,32 @@
         <ul id="known-browser-list"></ul>
       </details>
 
+      <details id="add-by-path">
+        <summary>Add by app location</summary>
+        <div id="app-path-form">
+          <p class="hint">Enter the path to a browser's .app bundle and the bundle ID will be detected automatically.</p>
+          <div class="path-row">
+            <input type="text" id="app-path-input" placeholder="/Applications/MyBrowser.app" />
+            <button id="detect-btn" type="button">Detect</button>
+          </div>
+          <span id="detect-error" class="error"></span>
+          <div id="detected-result" class="hidden">
+            <label>
+              Name
+              <input type="text" id="detected-name" />
+            </label>
+            <label>
+              Bundle ID
+              <input type="text" id="detected-bundle" readonly />
+            </label>
+            <p class="hint nmh-hint">NativeMessagingHosts path: <code id="detected-nmh"></code></p>
+            <button id="confirm-detected-btn" type="button" class="primary">Add browser</button>
+          </div>
+        </div>
+      </details>
+
       <details id="add-custom">
-        <summary>Add a custom browser</summary>
+        <summary>Add manually</summary>
         <form id="custom-form">
           <label>
             Name
@@ -48,6 +72,13 @@
           <span id="custom-error" class="error"></span>
         </form>
       </details>
+    </section>
+
+    <section id="danger-section">
+      <h2>Reset</h2>
+      <div class="row">
+        <button id="reset-btn" class="danger">Reset all settings</button>
+      </div>
     </section>
   </main>
 

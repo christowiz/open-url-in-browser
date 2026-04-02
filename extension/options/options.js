@@ -21,6 +21,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("verify-btn").addEventListener("click", verifyConnection);
   document.getElementById("copy-install-btn").addEventListener("click", copyInstallCommand);
   document.getElementById("custom-form").addEventListener("submit", onAddCustom);
+  document.getElementById("detect-btn").addEventListener("click", onDetectApp);
+  document.getElementById("confirm-detected-btn").addEventListener("click", onConfirmDetected);
+  document.getElementById("reset-btn").addEventListener("click", onReset);
 });
 
 // ---------------------------------------------------------------------------
@@ -137,6 +140,91 @@ async function saveBrowsers() {
 }
 
 // ---------------------------------------------------------------------------
+// Add by app path
+// ---------------------------------------------------------------------------
+
+async function onDetectApp() {
+  const errorEl = document.getElementById("detect-error");
+  const resultEl = document.getElementById("detected-result");
+  const detectBtn = document.getElementById("detect-btn");
+
+  errorEl.textContent = "";
+  resultEl.classList.add("hidden");
+
+  const appPath = document.getElementById("app-path-input").value.trim();
+  if (!appPath) {
+    errorEl.textContent = "Enter an app path first.";
+    return;
+  }
+
+  detectBtn.disabled = true;
+  detectBtn.textContent = "Detecting…";
+
+  try {
+    const result = await sendMessage({
+      type: MSG_TYPES.INSPECT_APP,
+      payload: { appPath },
+    });
+
+    if (result.error) {
+      errorEl.textContent = result.error;
+      return;
+    }
+
+    document.getElementById("detected-name").value = result.appName || "";
+    document.getElementById("detected-bundle").value = result.bundleId;
+    document.getElementById("detected-nmh").textContent =
+      `~/Library/Application Support/${result.nmhSubdir}/NativeMessagingHosts`;
+
+    resultEl.classList.remove("hidden");
+  } catch (err) {
+    errorEl.textContent = `Could not reach native host: ${err.message}`;
+  } finally {
+    detectBtn.disabled = false;
+    detectBtn.textContent = "Detect";
+  }
+}
+
+async function onConfirmDetected() {
+  const errorEl = document.getElementById("detect-error");
+  errorEl.textContent = "";
+
+  const name = document.getElementById("detected-name").value.trim();
+  const bundleId = document.getElementById("detected-bundle").value.trim();
+
+  if (!name) {
+    errorEl.textContent = "Please enter a name for the browser.";
+    return;
+  }
+  if (browsers.some((b) => b.bundleId === bundleId)) {
+    errorEl.textContent = "A browser with that bundle ID is already added.";
+    return;
+  }
+
+  const id = `detected-${bundleId}`;
+  browsers.push({ id, name, bundleId, isDefault: browsers.length === 0 });
+
+  document.getElementById("app-path-input").value = "";
+  document.getElementById("detected-result").classList.add("hidden");
+  document.getElementById("add-by-path").removeAttribute("open");
+
+  await saveBrowsers();
+}
+
+// ---------------------------------------------------------------------------
+// Reset
+// ---------------------------------------------------------------------------
+
+async function onReset() {
+  if (!confirm("Remove all configured browsers and clear all settings? This cannot be undone.")) return;
+  await chrome.storage.local.clear();
+  browsers = [];
+  renderBrowserList();
+  renderKnownBrowserList();
+  chrome.runtime.sendMessage({ type: MSG_TYPES.RELOAD_CONTEXT_MENU }).catch(() => {});
+}
+
+// ---------------------------------------------------------------------------
 // Connection verify
 // ---------------------------------------------------------------------------
 
@@ -161,7 +249,7 @@ async function verifyConnection() {
 
 async function copyInstallCommand() {
   const id = chrome.runtime.id;
-  const cmd = `bash installer/install.sh ${id}`;
+  const cmd = `bash /usr/local/lib/open-url-in-browser/install.sh ${id}`;
   await navigator.clipboard.writeText(cmd);
 
   const btn = document.getElementById("copy-install-btn");
