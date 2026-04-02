@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Open URL In Browser — Options</title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <main>
+    <h1>Open URL In Browser</h1>
+
+    <section id="connection-section">
+      <h2>Native Host</h2>
+      <div class="row">
+        <span id="connection-status" class="status-badge">—</span>
+        <button id="verify-btn">Verify connection</button>
+      </div>
+      <div class="row meta">
+        <span>Extension ID: <code id="extension-id"></code></span>
+        <button id="copy-install-btn">Copy install command</button>
+      </div>
+    </section>
+
+    <section id="browsers-section">
+      <h2>Browsers</h2>
+      <p class="hint">Add browsers you want to open URLs in. The default browser is used by the context menu.</p>
+
+      <ul id="browser-list"></ul>
+
+      <details id="add-known">
+        <summary>Add a known browser</summary>
+        <ul id="known-browser-list"></ul>
+      </details>
+
+      <details id="add-custom">
+        <summary>Add a custom browser</summary>
+        <form id="custom-form">
+          <label>
+            Name
+            <input type="text" id="custom-name" placeholder="My Browser" required />
+          </label>
+          <label>
+            Bundle ID
+            <input type="text" id="custom-bundle" placeholder="com.example.browser" required />
+          </label>
+          <button type="submit">Add</button>
+          <span id="custom-error" class="error"></span>
+        </form>
+      </details>
+    </section>
+  </main>
+
+  <script type="module" src="options.js"></script>
+</body>
+</html>

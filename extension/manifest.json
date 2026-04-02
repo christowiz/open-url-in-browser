@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Open URL In Browser",
+  "version": "1.0.0",
+  "description": "Open the current tab, selected tabs, or all tabs in a different browser.",
+
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9UsG8QypCav2cUkQ5q8+weFx5slUQ5JaFKiLFb5kmJr4HKJ2OEldX7+0gqxZJ+jlvC45YOjKtv3S/yHN05me8pQXr9GHYaluxYU38gvwDTxNCKUyS1rPYhbeNFUjMbtUOOV8zYyf2mGoCALtlILGkEoSiLyb28S+Ua7tCKiB+K76/tohnqC5LckTuiOfMPITa4+4gmQ1qVw4AJ6QNRvPXFeeLg+xDnImvZSieqTFKgFtqpKVQinxasqa7VAE9ifObOZhkpLb8FHSJ0zzygE/L5Toj0MYjGXuzO8qd9hSVRNCdpexy813KZ+0XIxNPm/4DE4pxeGNc0x2fnuAFsd5RwIDAQAB",
+
+  "permissions": [
+    "tabs",
+    "storage",
+    "nativeMessaging",
+    "contextMenus"
+  ],
+
+  "background": {
+    "service_worker": "background/service-worker.js",
+    "type": "module"
+  },
+
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  }
+}
