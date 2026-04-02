@@ -15,6 +15,10 @@ let browsers = [];
 // ---------------------------------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", async () => {
+  document.getElementById("settings-btn").addEventListener("click", () => {
+    chrome.runtime.openOptionsPage();
+  });
+
   [browsers, { selectedTabs, allTabs, currentTab }] = await Promise.all([
     getBrowsers(),
     getTabContext(),
@@ -176,6 +180,7 @@ async function doOpen(browser, tabs, toggle, btn, flash) {
   const urls = tabs.map((t) => t.url).filter(Boolean);
   const tabIds = tabs.map((t) => t.id);
   const closeTabs = toggle.checked;
+  const newWindow = true;
 
   btn.disabled = true;
   flash.classList.add("hidden");
@@ -185,7 +190,7 @@ async function doOpen(browser, tabs, toggle, btn, flash) {
   try {
     result = await sendMessage({
       type: MSG_TYPES.OPEN_URLS,
-      payload: { browser, urls, closeTabs, tabIds },
+      payload: { browser, urls, closeTabs, tabIds, newWindow },
     });
   } catch (err) {
     showFlash(flash, `Error: ${err.message}`, true);
@@ -220,9 +225,9 @@ function showNativeHostError() {
   showState("error");
   const id = chrome.runtime.id;
   document.getElementById("install-cmd").textContent =
-    `bash installer/install.sh ${id}`;
+    `bash /usr/local/lib/open-url-in-browser/install.sh ${id}`;
   document.getElementById("copy-cmd-btn").addEventListener("click", async () => {
-    await navigator.clipboard.writeText(`bash installer/install.sh ${id}`);
+    await navigator.clipboard.writeText(`bash /usr/local/lib/open-url-in-browser/install.sh ${id}`);
     document.getElementById("copy-cmd-btn").textContent = "Copied!";
   });
 }
