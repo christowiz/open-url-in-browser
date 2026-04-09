@@ -1,5 +1,5 @@
 import { MSG_TYPES } from "../shared/constants.js";
-import { getBrowsers } from "../shared/storage.js";
+import { getBrowsers, getWindowPreference, setWindowPreference } from "../shared/storage.js";
 
 // ---------------------------------------------------------------------------
 // State
@@ -9,6 +9,7 @@ let selectedTabs = [];   // highlighted tabs in the current window
 let allTabs = [];        // all tabs in the current window
 let currentTab = null;
 let browsers = [];
+let ctrlPressed = false; // track if Control key is held
 
 // ---------------------------------------------------------------------------
 // Boot
@@ -36,6 +37,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   renderMain();
+
+  // Handle Option key for button text toggling
+  document.addEventListener("keydown", (e) => {
+    if (e.altKey) {
+      ctrlPressed = true;
+      updateButtonTextForCtrl(true);
+    }
+  });
+
+  document.addEventListener("keyup", (e) => {
+    if (!e.altKey) {
+      ctrlPressed = false;
+      updateButtonTextForCtrl(false);
+    }
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -90,7 +106,7 @@ async function checkRecovery() {
 // Main render
 // ---------------------------------------------------------------------------
 
-function renderMain() {
+async function renderMain() {
   const main = document.getElementById("main");
   main.classList.remove("hidden");
 
@@ -104,6 +120,20 @@ function renderMain() {
   // Close tabs toggle
   const toggle = document.getElementById("close-tabs-toggle");
   toggle.checked = false;
+
+  // Window preference radio buttons
+  const windowPref = await getWindowPreference();
+  document.querySelector(`input[name="window-preference"][value="${windowPref}"]`).checked = true;
+
+  document.querySelectorAll('input[name="window-preference"]').forEach((radio) => {
+    radio.addEventListener("change", (e) => {
+      setWindowPreference(e.target.value);
+      // Update button text if Control is currently pressed
+      if (ctrlPressed) {
+        updateButtonTextForCtrl(true);
+      }
+    });
+  });
 
   // Browser list
   const ul = document.getElementById("browser-list");
@@ -135,8 +165,9 @@ function buildBrowserRow(browser, toggle) {
   // "Open current tab"
   if (currentTab) {
     const btn = makeButton("Open current tab");
-    btn.addEventListener("click", () =>
-      doOpen(browser, [currentTab], toggle, btn, flash)
+    btn.dataset.originalText = "Open current tab";
+    btn.addEventListener("click", (e) =>
+      doOpen(browser, [currentTab], toggle, btn, flash, e.altKey)
     );
     actions.appendChild(btn);
   }
@@ -145,8 +176,9 @@ function buildBrowserRow(browser, toggle) {
   if (selectedTabs.length > 1) {
     const btn = makeButton(`Open ${selectedTabs.length} selected`);
     btn.classList.add("primary");
-    btn.addEventListener("click", () =>
-      doOpen(browser, selectedTabs, toggle, btn, flash)
+    btn.dataset.originalText = `Open ${selectedTabs.length} selected`;
+    btn.addEventListener("click", (e) =>
+      doOpen(browser, selectedTabs, toggle, btn, flash, e.altKey)
     );
     actions.appendChild(btn);
   }
@@ -154,8 +186,9 @@ function buildBrowserRow(browser, toggle) {
   // "Open all tabs"
   if (allTabs.length > 1) {
     const btn = makeButton(`Open all ${allTabs.length} tabs`);
-    btn.addEventListener("click", () =>
-      doOpen(browser, allTabs, toggle, btn, flash)
+    btn.dataset.originalText = `Open all ${allTabs.length} tabs`;
+    btn.addEventListener("click", (e) =>
+      doOpen(browser, allTabs, toggle, btn, flash, e.altKey)
     );
     actions.appendChild(btn);
   }
@@ -173,14 +206,39 @@ function makeButton(label) {
 }
 
 // ---------------------------------------------------------------------------
+// Control key toggling
+// ---------------------------------------------------------------------------
+
+async function updateButtonTextForCtrl(isPressed) {
+  const buttons = document.querySelectorAll(".browser-actions button");
+  const windowPref = document.querySelector('input[name="window-preference"]:checked')?.value || "new";
+  const oppositeAction = windowPref === "new" ? "in topmost window" : "in new window";
+
+  buttons.forEach((btn) => {
+    if (isPressed) {
+      const originalText = btn.dataset.originalText || btn.textContent;
+      btn.textContent = `${originalText} ${oppositeAction}`;
+    } else {
+      btn.textContent = btn.dataset.originalText || btn.textContent;
+    }
+  });
+}
+
+// ---------------------------------------------------------------------------
 // Open action
 // ---------------------------------------------------------------------------
 
-async function doOpen(browser, tabs, toggle, btn, flash) {
+async function doOpen(browser, tabs, toggle, btn, flash, ctrlHeld = false) {
   const urls = tabs.map((t) => t.url).filter(Boolean);
   const tabIds = tabs.map((t) => t.id);
   const closeTabs = toggle.checked;
-  const newWindow = true;
+  const windowPref = document.querySelector('input[name="window-preference"]:checked')?.value || "new";
+  let newWindow = windowPref === "new";
+
+  // Invert if Control was held during click
+  if (ctrlHeld) {
+    newWindow = !newWindow;
+  }
 
   btn.disabled = true;
   flash.classList.add("hidden");

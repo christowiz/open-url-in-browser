@@ -4,6 +4,7 @@ import {
   getLastOperation,
   setLastOperation,
   clearLastOperation,
+  getWindowPreference,
 } from "../shared/storage.js";
 
 // ---------------------------------------------------------------------------
@@ -40,11 +41,15 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   const url = info.linkUrl ?? info.pageUrl;
   if (!url || isUnsendable(url)) return;
 
+  const windowPref = await getWindowPreference();
+  const newWindow = windowPref === "new";
+
   await executeOpen({
     browser: defaultBrowser,
     urls: [url],
     closeTabs: false,
     tabIds: [],
+    newWindow,
   });
 });
 

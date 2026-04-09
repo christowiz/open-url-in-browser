@@ -1,5 +1,5 @@
 import { KNOWN_BROWSERS, MSG_TYPES } from "../shared/constants.js";
-import { getBrowsers, setBrowsers } from "../shared/storage.js";
+import { getBrowsers, setBrowsers, getWindowPreference, setWindowPreference } from "../shared/storage.js";
 
 // ---------------------------------------------------------------------------
 // State
@@ -17,6 +17,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   browsers = await getBrowsers();
   renderBrowserList();
   renderKnownBrowserList();
+
+  const windowPref = await getWindowPreference();
+  document.querySelector(`input[name="window-preference"][value="${windowPref}"]`).checked = true;
+
+  document.querySelectorAll('input[name="window-preference"]').forEach((radio) => {
+    radio.addEventListener("change", (e) => {
+      setWindowPreference(e.target.value);
+    });
+  });
 
   document.getElementById("verify-btn").addEventListener("click", verifyConnection);
   document.getElementById("copy-install-btn").addEventListener("click", copyInstallCommand);
