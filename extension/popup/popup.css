@@ -122,11 +122,18 @@ code {
 /* Toolbar */
 .toolbar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 8px;
   padding: 8px 14px;
   border-bottom: 1px solid #f0f0f0;
   background: #fafafa;
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .toggle-label {
@@ -136,6 +143,27 @@ code {
   cursor: pointer;
   font-size: 12px;
   color: #444;
+}
+
+.radio-group-inline {
+  display: flex;
+  gap: 8px;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #444;
+}
+
+input[type="radio"] {
+  cursor: pointer;
 }
 
 .badge {

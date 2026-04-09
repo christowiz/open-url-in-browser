@@ -41,11 +41,25 @@
     <!-- Main UI -->
     <div id="main" class="hidden">
       <div class="toolbar">
-        <label class="toggle-label">
-          <input type="checkbox" id="close-tabs-toggle" />
-          Close source tabs
-        </label>
-        <span id="tab-count-badge" class="badge hidden"></span>
+        <div class="toolbar-group">
+          <label class="toggle-label">
+            <input type="checkbox" id="close-tabs-toggle" />
+            Close source tabs
+          </label>
+          <span id="tab-count-badge" class="badge hidden"></span>
+        </div>
+        <div class="toolbar-group">
+          <fieldset class="radio-group-inline">
+            <label class="radio-label">
+              <input type="radio" name="window-preference" value="new" checked />
+              New window
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="window-preference" value="active" />
+              Topmost
+            </label>
+          </fieldset>
+        </div>
       </div>
 
       <ul id="browser-list"></ul>

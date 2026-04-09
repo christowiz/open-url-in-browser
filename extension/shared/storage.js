@@ -15,6 +15,7 @@
 const KEYS = {
   BROWSERS: "browsers",
   LAST_OPERATION: "lastOperation",
+  WINDOW_PREFERENCE: "windowPreference",
 };
 
 // ---------------------------------------------------------------------------
@@ -57,4 +58,23 @@ export async function setLastOperation(op) {
 
 export async function clearLastOperation() {
   await chrome.storage.local.remove(KEYS.LAST_OPERATION);
+}
+
+// ---------------------------------------------------------------------------
+// windowPreference
+// ---------------------------------------------------------------------------
+
+/**
+ * @returns {Promise<'new' | 'active'>}
+ */
+export async function getWindowPreference() {
+  const result = await chrome.storage.local.get(KEYS.WINDOW_PREFERENCE);
+  return result[KEYS.WINDOW_PREFERENCE] ?? "new";
+}
+
+/**
+ * @param {'new' | 'active'} preference
+ */
+export async function setWindowPreference(preference) {
+  await chrome.storage.local.set({ [KEYS.WINDOW_PREFERENCE]: preference });
 }
