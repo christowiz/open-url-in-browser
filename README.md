@@ -2,7 +2,7 @@
 
 A Chrome/Chromium extension that lets you open the current tab, selected tabs, or all tabs in a different browser — Safari, Firefox, Brave, Edge, Helium, Vivaldi, Opera, Zen, or any Chromium-based browser installed on your Mac.
 
-Built with a [Native Messaging](https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging) host (a Python script) that invokes macOS's `open -b <bundleId>` to launch URLs in the target browser.
+Built with a [Native Messaging](https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging) host (a Python script) that invokes macOS's `open -b <bundleId>` to launch URLs in the target browser. Choose to open tabs in a new window or the topmost active window, with quick toggle via the Option key.
 
 ---
 
@@ -13,13 +13,15 @@ Built with a [Native Messaging](https://developer.chrome.com/docs/extensions/dev
 - **Open current tab** in any configured browser
 - **Open N selected tabs** — shown when you highlight multiple tabs with Shift/Cmd+click
 - **Open all tabs** in the current window
-- **Always opens in a new window** — tabs are always opened in a new browser window
+- **Window preference** — choose to open in a new window or the topmost (active) window
+- **Option key toggle** — hold Option while hovering over buttons to preview the opposite action (e.g., "Open current tab in topmost window"), and click while holding Option to use that setting
 - **Close source tabs toggle** — closes the Chrome tabs after a successful open
 - **Recovery banner** — if some tabs fail to open, a banner appears with a Retry button
 - **Settings shortcut** — ⚙ button opens the Options page directly
 
 ### Options Page
 
+- **Window preference** — set the default behavior (new window or topmost window)
 - **Verify native host connection** — confirms the Python helper is installed and reachable
 - **Copy install command** — one-click copy of the terminal command to install the native host
 - **Add known browsers** — one-click addition of any of the 10 pre-listed browsers
@@ -134,11 +136,24 @@ This removes the NMH manifests and the `/usr/local/lib/open-url-in-browser/` dir
 ### Opening tabs
 
 1. Click the extension icon to open the popup
-2. Optionally toggle **Close source tabs** — closes the Chrome tabs after opening (only on full success)
-3. Click the appropriate button next to the target browser:
+2. Choose your window preference:
+   - **New window** — opens tabs in a new browser window
+   - **Topmost** — opens tabs in the topmost (currently active) browser window
+3. Optionally toggle **Close source tabs** — closes the Chrome tabs after opening (only on full success)
+4. Click the appropriate button next to the target browser:
    - **Open current tab** — sends just the active tab
    - **Open N selected** — shown when multiple tabs are highlighted (Shift/Cmd+click tabs)
    - **Open all N tabs** — sends every tab in the window
+
+### Using the Option key toggle
+
+For quick one-off choices, you can hold the **Option key** while clicking to use the opposite window setting without changing your preference:
+
+1. Hold **Option** (Alt on Windows/Linux) — buttons update to show the opposite action
+2. Click while still holding Option — tabs open in the opposite window setting
+3. Release Option — preference stays the same for your next action
+
+**Example:** If "New window" is selected and you want to open in the topmost window just this once, hold Option and click. The button will show "Open current tab in topmost window".
 
 ### Recovery
 
@@ -182,11 +197,17 @@ options.js                                          →  firefox binary (Firefox
 
 **Internal URLs are filtered:** `chrome://`, `chrome-extension://`, `about:`, and `data:` URLs are skipped — they cannot be opened in another browser.
 
-**New window strategies:**
-- Chromium browsers: `open -b <id> --args --new-window <urls>`
-- Firefox: calls the `firefox` binary directly with `-new-window <url1> -new-tab <url2> ...`
-- Safari: uses `osascript` (AppleScript) to create a new document and add tabs
-- Other browsers: falls back to regular open (no new-window guarantee)
+**Window opening strategies:**
+- **New window:** Opens tabs in a new browser window
+  - Chromium browsers: `open -b <id> --args --new-window <urls>`
+  - Firefox: calls the `firefox` binary directly with `-new-window <url1> -new-tab <url2> ...`
+  - Safari: uses `osascript` (AppleScript) to create a new document and add tabs
+  - Other browsers: falls back to regular open
+- **Topmost window:** Adds tabs to the currently active browser window
+  - Chromium browsers: `open -b <id> <urls>` (adds tabs to the foremost window)
+  - Firefox: `firefox <url1> <url2> ...` (adds tabs to the current window)
+  - Safari: uses `osascript` to add tabs to the frontmost window
+  - Other browsers: falls back to regular open
 
 **Safari note:** Opening tabs in Safari requires the **Automation** permission. macOS will prompt for this the first time `osascript` targets Safari. You can manage this in **System Settings → Privacy & Security → Automation**.
 
