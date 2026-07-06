@@ -2,7 +2,7 @@
 
 A Chrome/Chromium extension that lets you open the current tab, selected tabs, or all tabs in a different browser — Safari, Firefox, Brave, Edge, Helium, Vivaldi, Opera, Zen, or any Chromium-based browser installed on your Mac.
 
-Built with a [Native Messaging](https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging) host (a Python script) that invokes macOS's `open -b <bundleId>` to launch URLs in the target browser. Choose to open tabs in a new window or the topmost active window, with quick toggle via the Option key.
+Built with a [Native Messaging](https://developer.chrome.com/docs/extensions/develop/concepts/native-messaging) host (a Python script) that invokes macOS's `open -b <bundleId>` to launch URLs in the target browser.
 
 ---
 
