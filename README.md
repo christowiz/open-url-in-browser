@@ -37,18 +37,18 @@ Right-click any page or link and choose **"Open in \<default browser\>"** to ope
 
 ### Supported Browsers (pre-listed)
 
-| ID | Name | Bundle ID |
-|----|------|-----------|
-| safari | Safari | com.apple.Safari |
-| chrome | Google Chrome | com.google.Chrome |
-| brave | Brave | com.brave.Browser |
-| firefox | Firefox | org.mozilla.firefox |
-| edge | Microsoft Edge | com.microsoft.edgemac |
-| helium | Helium | net.imput.helium |
-| vivaldi | Vivaldi | com.vivaldi.Vivaldi |
-| opera | Opera | com.operasoftware.Opera |
-| zen | Zen Browser | net.zen-browser.app |
-| canary | Chrome Canary | com.google.Chrome.canary |
+| ID      | Name           | Bundle ID                |
+| ------- | -------------- | ------------------------ |
+| safari  | Safari         | com.apple.Safari         |
+| chrome  | Google Chrome  | com.google.Chrome        |
+| brave   | Brave          | com.brave.Browser        |
+| firefox | Firefox        | org.mozilla.firefox      |
+| edge    | Microsoft Edge | com.microsoft.edgemac    |
+| helium  | Helium         | net.imput.helium         |
+| vivaldi | Vivaldi        | com.vivaldi.Vivaldi      |
+| opera   | Opera          | com.operasoftware.Opera  |
+| zen     | Zen Browser    | net.zen-browser.app      |
+| canary  | Chrome Canary  | com.google.Chrome.canary |
 
 Any browser not in this list can be added manually via the Options page.
 
@@ -97,17 +97,17 @@ bash installer/install.sh <YOUR_EXTENSION_ID>
 
 **Registered NMH paths (if the browser is installed):**
 
-| Browser | NMH path |
-|---------|----------|
-| Chrome | `~/Library/Application Support/Google/Chrome/NativeMessagingHosts/` |
-| Chrome Beta | `~/Library/Application Support/Google/Chrome Beta/NativeMessagingHosts/` |
-| Chrome Canary | `~/Library/Application Support/Google/Chrome Canary/NativeMessagingHosts/` |
-| Brave | `~/Library/Application Support/BraveSoftware/Brave-Browser/NativeMessagingHosts/` |
-| Edge | `~/Library/Application Support/Microsoft Edge/NativeMessagingHosts/` |
-| Vivaldi | `~/Library/Application Support/Vivaldi/NativeMessagingHosts/` |
-| Opera | `~/Library/Application Support/com.operasoftware.Opera/NativeMessagingHosts/` |
-| Helium | `~/Library/Application Support/net.imput.helium/NativeMessagingHosts/` |
-| Zen | `~/Library/Application Support/net.zen-browser.app/NativeMessagingHosts/` |
+| Browser       | NMH path                                                                          |
+| ------------- | --------------------------------------------------------------------------------- |
+| Chrome        | `~/Library/Application Support/Google/Chrome/NativeMessagingHosts/`               |
+| Chrome Beta   | `~/Library/Application Support/Google/Chrome Beta/NativeMessagingHosts/`          |
+| Chrome Canary | `~/Library/Application Support/Google/Chrome Canary/NativeMessagingHosts/`        |
+| Brave         | `~/Library/Application Support/BraveSoftware/Brave-Browser/NativeMessagingHosts/` |
+| Edge          | `~/Library/Application Support/Microsoft Edge/NativeMessagingHosts/`              |
+| Vivaldi       | `~/Library/Application Support/Vivaldi/NativeMessagingHosts/`                     |
+| Opera         | `~/Library/Application Support/com.operasoftware.Opera/NativeMessagingHosts/`     |
+| Helium        | `~/Library/Application Support/net.imput.helium/NativeMessagingHosts/`            |
+| Zen           | `~/Library/Application Support/net.zen-browser.app/NativeMessagingHosts/`         |
 
 After installing, click **Verify connection** in the Options page to confirm the host is reachable.
 
@@ -198,6 +198,7 @@ options.js                                          →  firefox binary (Firefox
 **Internal URLs are filtered:** `chrome://`, `chrome-extension://`, `about:`, and `data:` URLs are skipped — they cannot be opened in another browser.
 
 **Window opening strategies:**
+
 - **New window:** Opens tabs in a new browser window
   - Chromium browsers: `open -b <id> --args --new-window <urls>`
   - Firefox: calls the `firefox` binary directly with `-new-window <url1> -new-tab <url2> ...`
